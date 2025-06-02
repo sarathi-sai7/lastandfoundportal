@@ -1,0 +1,140 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report an Item</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+        form input[type="file"] {
+            padding: 8px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        /* Image preview style */
+        #imagePreview {
+            margin-top: 15px;
+            max-width: 250px;
+            max-height: 250px;
+            border-radius: 10px;
+            display: none;
+            object-fit: contain;
+            border: 1px solid #ccc;
+        }
+        /* Error message */
+        #errorMsg {
+            color: red;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h2>Report a Lost or Found Item</h2>
+            <p>Please provide the details below.</p>
+        </header>
+        <form method="POST" enctype="multipart/form-data" id="reportForm" onsubmit="return validateForm()">
+            {% csrf_token %}
+
+            <label for="type">Item Type</label>
+            <select name="type" id="type" required>
+                <option value="Lost">Lost</option>
+                <option value="Found">Found</option>
+            </select>
+
+            <label for="name">Item Name</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="description">Item Description</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+
+            <label for="location">Location Found/Lost</label>
+            <input type="text" id="location" name="location" required>
+
+            <label for="contact">Your Contact Info</label>
+            <input type="text" id="contact" name="contact" required>
+
+            <label for="image">Upload Image (optional)</label>
+            <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
+
+            <!-- Image preview -->
+            <img id="imagePreview" src="#" alt="Image Preview" />
+
+            <!-- Error message -->
+            <div id="errorMsg"></div>
+
+            <button type="submit" class="button primary">Submit Report</button>
+          
+
+<!-- Back button -->
+<button type="button" onclick="window.location.href='/'" class="button secondary" style="margin-top: 20px;">
+  Back to Homepage
+</button>
+
+        </form>
+    </div>
+
+    <script>
+        // Form validation function
+        function validateForm() {
+            const name = document.getElementById('name').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const contact = document.getElementById('contact').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+
+            errorMsg.innerText = ''; // Reset errors
+
+            if (!name) {
+                errorMsg.innerText = 'Please enter item name.';
+                return false;
+            }
+            if (!description) {
+                errorMsg.innerText = 'Please enter item description.';
+                return false;
+            }
+            if (!location) {
+                errorMsg.innerText = 'Please enter location.';
+                return false;
+            }
+            if (!contact) {
+                errorMsg.innerText = 'Please enter contact info.';
+                return false;
+            }
+            // Simple phone/email validation example:
+            const phoneRegex = /^\d{10}$/;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!(phoneRegex.test(contact) || emailRegex.test(contact))) {
+                errorMsg.innerText = 'Enter a valid 10-digit phone number or email address.';
+                return false;
+            }
+
+            return true; // Allow submit
+        }
+
+        // Image preview function
+        function previewImage(event) {
+            const preview = document.getElementById('imagePreview');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

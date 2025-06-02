@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Lost and Found{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <header>
+        {% if user.is_authenticated %}
+            <p>
+                Hi {{ user.username }}!
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" style="
+                        background:none;
+                        border:none;
+                        color:blue;
+                        cursor:pointer;
+                        text-decoration:underline;
+                        padding:0;
+                        font:inherit;
+                    ">Logout</button>
+                </form>
+            </p>
+        {% else %}
+            <p>
+                <a href="{% url 'login' %}">Login</a> |
+                <a href="{% url 'signup' %}">Sign Up</a>
+            </p>
+        {% endif %}
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Page specific content will go here -->
+        {% endblock %}
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Report an Item</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h2>Reported Items</h2>
+            <p>Browse through the items that have been reported.</p>
+        </header>
+
+        <!-- Live Search Input -->
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Search items..."
+            style="padding: 10px; width: 80%; margin-bottom: 20px;"
+            onkeyup="filterItems()"
+        />
+
+        <div class="items-list">
+            {% for item in items %}
+            <div class="item-card" data-name="{{ item.name|lower }}" data-type="{{ item.type|lower }}">
+                <h3>{{ item.name }} ({{ item.type }})</h3>
+                <a href="{% url 'item_detail' item.id %}" class="button details">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- JavaScript for live filtering -->
+    <script>
+        function filterItems() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const cards = document.querySelectorAll(".item-card");
+
+            cards.forEach(card => {
+                const name = card.getAttribute("data-name");
+                const type = card.getAttribute("data-type");
+
+                if (name.includes(input) || type.includes(input)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - Lost and Found{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: linear-gradient(to right, #e3f2fd, #ffffff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .hero-box {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 500px;
+        width: 100%;
+    }
+
+    .hero-box h1 {
+        color: #0044cc;
+        font-size: 2.8rem;
+        margin-bottom: 15px;
+    }
+
+    .hero-box p {
+        font-size: 1.2rem;
+        color: #555;
+        margin-bottom: 30px;
+    }
+
+    .button-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .button {
+        padding: 12px 25px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        text-decoration: none;
+        color: white;
+    }
+
+    .primary {
+        background-color: #0044cc;
+    }
+
+    .primary:hover {
+        background-color: #0033a0;
+    }
+
+    .secondary {
+        background-color: #999;
+    }
+
+    .secondary:hover {
+        background-color: #666;
+    }
+</style>
+
+<div class="hero-box">
+    <h1>Lost & Found Portal</h1>
+    <p>Connecting people, one item at a time.</p>
+    <div class="button-group">
+        <a href="{% url 'report' %}" class="button primary">➕ Report an Item</a>
+        <a href="{% url 'items' %}" class="button secondary">📁 View Items</a>
+    </div>
+</div>
+{% endblock %}
+
